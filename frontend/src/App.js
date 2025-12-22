@@ -1,9 +1,18 @@
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+
 function App() {
   return (
-    <div>
-      <h1>BakeHub Frontend</h1>
-      <p>Day 6 setup successful 🚀</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<h1>BakeHub is running ✅</h1>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
