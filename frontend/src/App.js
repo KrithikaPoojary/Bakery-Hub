@@ -40,7 +40,10 @@ export default function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="font-[Poppins] bg-gray-900 min-h-screen flex flex-col">
+        {/* 🌈 GLOBAL GRADIENT BACKGROUND */}
+        <div className="font-[Poppins] min-h-screen flex flex-col text-white
+                        bg-gradient-to-br from-[#0b1020] via-[#111827] to-[#1f1b3a]">
+          
           <Header />
 
           <main className="flex-1">
