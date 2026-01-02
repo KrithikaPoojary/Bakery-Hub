@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { User, Phone, Lock } from "lucide-react";
+import { User, Phone, Lock, Save, ShieldCheck } from "lucide-react";
 
 export default function OwnerSettings() {
   const [name, setName] = useState("");
@@ -8,21 +8,24 @@ export default function OwnerSettings() {
 
   const token = localStorage.getItem("token");
 
-  // Load owner data
+  // ---------------- LOAD OWNER DATA ----------------
   useEffect(() => {
     async function loadData() {
-      const res = await fetch("http://localhost:5000/api/users/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = await res.json();
-      setName(data.name || "");
-      setPhone(data.phone || "");
+      try {
+        const res = await fetch("http://localhost:5000/api/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        setName(data.name || "");
+        setPhone(data.phone || "");
+      } catch (err) {
+        console.error("Load profile error", err);
+      }
     }
     loadData();
   }, [token]);
 
-  // Update Profile
+  // ---------------- UPDATE PROFILE ----------------
   const updateProfile = async () => {
     if (!name.trim() || !phone.trim()) {
       return alert("Name and phone cannot be empty");
@@ -46,7 +49,7 @@ export default function OwnerSettings() {
     alert("Profile updated successfully!");
   };
 
-  // Change Password
+  // ---------------- CHANGE PASSWORD ----------------
   const changePassword = async () => {
     if (!password.trim()) return alert("Enter a new password");
 
@@ -70,80 +73,95 @@ export default function OwnerSettings() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center py-14 px-6 bg-gradient-to-br from-pink-50 to-white">
-      <div className="w-full max-w-2xl">
-        <h1 className="text-3xl font-bold mb-10 text-center text-gray-900 tracking-wide">
+    /* 🌈 GLOBAL GRADIENT */
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black px-6 py-14 text-white">
+      
+      <div className="max-w-3xl mx-auto">
+        {/* TITLE */}
+        <h1 className="text-4xl font-bold text-center text-pink-400 mb-12">
           Owner Settings
         </h1>
 
-        <div className="p-10 bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl border border-pink-100 space-y-12 hover:shadow-2xl transition">
-          {/* PROFILE SECTION */}
+        {/* GLASS CARD */}
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-10 space-y-14">
+          
+          {/* ---------------- PROFILE ---------------- */}
           <div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-              Profile Information
+            <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+              <User className="text-pink-400" /> Profile Information
             </h2>
 
-            {/* Name */}
-            <label className="block mb-7">
-              <span className="flex items-center gap-2 text-gray-600 font-semibold">
-                <User size={20} /> Full Name
-              </span>
+            {/* NAME */}
+            <div className="mb-6">
+              <label className="text-sm text-gray-300 flex items-center gap-2">
+                <User size={16} /> Full Name
+              </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-2 w-full p-3 rounded-xl border border-gray-300 bg-white focus:border-pink-400 focus:ring-2 focus:ring-pink-300 outline-none transition shadow-sm"
+                className="mt-2 w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 
+                           text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                           focus:ring-pink-500"
               />
-            </label>
+            </div>
 
-            {/* Phone */}
-            <label className="block mb-7">
-              <span className="flex items-center gap-2 text-gray-600 font-semibold">
-                <Phone size={20} /> Phone Number
-              </span>
+            {/* PHONE */}
+            <div className="mb-8">
+              <label className="text-sm text-gray-300 flex items-center gap-2">
+                <Phone size={16} /> Phone Number
+              </label>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="mt-2 w-full p-3 rounded-xl border border-gray-300 bg-white focus:border-pink-400 focus:ring-2 focus:ring-pink-300 outline-none transition shadow-sm"
-                placeholder="Enter your phone"
+                className="mt-2 w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 
+                           text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                           focus:ring-pink-500"
+                placeholder="Enter your phone number"
               />
-            </label>
+            </div>
 
             <button
               onClick={updateProfile}
-              className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white py-3 rounded-xl shadow-md hover:opacity-90 transition font-semibold tracking-wide"
+              className="w-full flex items-center justify-center gap-2 
+                         bg-gradient-to-r from-pink-600 to-purple-600 
+                         text-white py-3 rounded-xl font-semibold shadow-lg hover:opacity-90 transition"
             >
-              Save Changes
+              <Save size={18} /> Save Profile
             </button>
           </div>
 
-          <hr className="border-pink-200" />
+          <hr className="border-white/20" />
 
-          {/* PASSWORD */}
+          {/* ---------------- SECURITY ---------------- */}
           <div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-              Security
+            <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+              <ShieldCheck className="text-pink-400" /> Security
             </h2>
 
-            <label className="block mb-7">
-              <span className="flex items-center gap-2 text-gray-600 font-semibold">
-                <Lock size={20} /> New Password
-              </span>
+            <div className="mb-8">
+              <label className="text-sm text-gray-300 flex items-center gap-2">
+                <Lock size={16} /> New Password
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-2 w-full p-3 rounded-xl border border-gray-300 bg-white focus:border-pink-400 focus:ring-2 focus:ring-pink-300 outline-none transition shadow-sm"
+                className="mt-2 w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 
+                           text-white placeholder-gray-400 focus:outline-none focus:ring-2 
+                           focus:ring-pink-500"
                 placeholder="Enter new password"
               />
-            </label>
+            </div>
 
             <button
               onClick={changePassword}
-              className="w-full bg-black text-white py-3 rounded-xl shadow-md hover:bg-gray-900 transition font-semibold tracking-wide"
+              className="w-full flex items-center justify-center gap-2 
+                         bg-black/70 border border-white/20 text-white 
+                         py-3 rounded-xl font-semibold hover:bg-black transition"
             >
-              Update Password
+              <Lock size={18} /> Update Password
             </button>
           </div>
         </div>
