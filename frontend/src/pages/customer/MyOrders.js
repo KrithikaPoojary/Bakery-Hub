@@ -8,7 +8,6 @@ import {
   Truck,
   Package,
   ChevronRight,
-  RefreshCcw,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";

@@ -8,11 +8,9 @@ import {
   CheckCircle,
   Clock,
   XCircle,
-  Search as SearchIcon,
   User,
   ChevronLeft,
   ChevronRight,
-  Activity,
   DollarSign,
 } from "lucide-react";
 import PayoutManagement from "./PayoutManagement";
@@ -28,7 +26,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   LineChart,
   Line,
   CartesianGrid,

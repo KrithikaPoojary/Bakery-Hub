@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Clock, CheckCircle, Truck } from "lucide-react";
+import { CheckCircle, Truck } from "lucide-react";
 import { API_BASE_URL } from "../../config";
 
 export default function OrderTracking() {

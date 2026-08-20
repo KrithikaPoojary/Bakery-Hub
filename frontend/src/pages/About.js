@@ -1,5 +1,5 @@
 import React from "react";
-import { Heart, Star, Globe, ShieldCheck, Sparkles } from "lucide-react";
+import { Heart, Star, Globe, ShieldCheck } from "lucide-react";
 
 export default function About() {
   return (

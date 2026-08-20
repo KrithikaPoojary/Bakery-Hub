@@ -12,7 +12,7 @@ export default function CustomerBrowse() {
 
   const [selectedCity, setSelectedCity] = useState("all");
   const [search, setSearch] = useState("");
-  const [sortMode, setSortMode] = useState("nearest");
+  const sortMode = "nearest";
 
   const [userLocation, setUserLocation] = useState(null);
   const [locationStatus, setLocationStatus] = useState("idle");

@@ -35,7 +35,7 @@ export default function Contact() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${API_BASE_URL}/messages`, form);
+      await axios.post(`${API_BASE_URL}/messages`, form);
 
       setSuccessMsg("Your message has been sent successfully! Our team will get back to you.");
       setForm({

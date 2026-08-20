@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { DollarSign, CheckCircle, Clock, AlertCircle, ArrowLeft } from "lucide-react";
 import { API_BASE_URL } from "../../config";
 
 export default function PayoutManagement() {
