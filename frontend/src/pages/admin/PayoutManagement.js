@@ -24,6 +24,7 @@ export default function PayoutManagement() {
   useEffect(() => {
     loadCompletedOrders();
     loadPayouts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadCompletedOrders = async () => {

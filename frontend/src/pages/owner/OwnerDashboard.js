@@ -43,6 +43,7 @@ export default function OwnerDashboard() {
       }
     };
     loadAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* ---------------- STATS ---------------- */

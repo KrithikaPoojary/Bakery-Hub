@@ -12,6 +12,7 @@ export default function CustomerMenu() {
 
   useEffect(() => {
     if (!user) navigate("/login", { state: { from: `/customer/menu/${id}` } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [bakery, setBakery] = useState(null);
