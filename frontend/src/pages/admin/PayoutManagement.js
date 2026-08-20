@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DollarSign, CheckCircle, Clock, AlertCircle, ArrowLeft } from "lucide-react";
+import { API_BASE_URL } from "../../config";
 
 export default function PayoutManagement() {
   const [section, setSection] = useState("orders"); // orders | payouts
@@ -30,7 +31,7 @@ export default function PayoutManagement() {
     try {
       setLoading(true);
       const res = await axios.get(
-        "http://localhost:5000/api/payouts/completed-orders",
+        `${API_BASE_URL}/payouts/completed-orders`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCompletedOrders(res.data);
@@ -44,7 +45,7 @@ export default function PayoutManagement() {
 
   const loadPayouts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/payouts", {
+      const res = await axios.get(`${API_BASE_URL}/payouts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPayouts(res.data);
@@ -73,7 +74,7 @@ export default function PayoutManagement() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/payouts",
+        `${API_BASE_URL}/payouts`,
         {
           bakeryId,
           orderIds: selectedOrders,
@@ -103,7 +104,7 @@ export default function PayoutManagement() {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/payouts/${selectedPayout._id}/process`,
+        `${API_BASE_URL}/payouts/${selectedPayout._id}/process`,
         {
           paymentMethod: "bank_transfer",
           paymentDetails,

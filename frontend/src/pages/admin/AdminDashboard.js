@@ -16,6 +16,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import PayoutManagement from "./PayoutManagement";
+import { API_BASE_URL, getAssetUrl } from "../../config";
 
 import {
   ResponsiveContainer,
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
     const fetchBakeries = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:5000/api/bakeries", {
+        const res = await axios.get(`${API_BASE_URL}/bakeries`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         // if ownerId is object id only, it's fine; otherwise populate fields as available
@@ -76,7 +77,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Approve this bakery?")) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/bakeries/${id}/approve`,
+        `${API_BASE_URL}/bakeries/${id}/approve`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -97,7 +98,7 @@ export default function AdminDashboard() {
     if (!window.confirm("Reject this bakery?")) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/bakeries/${id}/reject`,
+        `${API_BASE_URL}/bakeries/${id}/reject`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -124,7 +125,7 @@ export default function AdminDashboard() {
     try {
       for (const b of pending) {
         await axios.put(
-          `http://localhost:5000/api/bakeries/${b._id}/approve`,
+          `${API_BASE_URL}/bakeries/${b._id}/approve`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -624,7 +625,7 @@ export default function AdminDashboard() {
                         b.imageUrl
                           ? b.imageUrl.startsWith("http")
                             ? b.imageUrl
-                            : `http://localhost:5000${b.imageUrl}`
+                            : getAssetUrl(b.imageUrl)
                           : "https://images.unsplash.com/photo-1542831371-d531d36971e6"
                       }
                       alt={b.name}
@@ -861,7 +862,7 @@ export default function AdminDashboard() {
     }, []);
 
     const loadMessages = async () => {
-      const res = await axios.get("http://localhost:5000/api/messages", {
+      const res = await axios.get(`${API_BASE_URL}/messages`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(res.data);
@@ -872,7 +873,7 @@ export default function AdminDashboard() {
 
       if (msg.status === "unread") {
         await axios.put(
-          `http://localhost:5000/api/messages/${msg._id}/read`,
+          `${API_BASE_URL}/messages/${msg._id}/read`,
           {},
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -884,7 +885,7 @@ export default function AdminDashboard() {
       if (!replyText.trim()) return alert("Reply cannot be empty");
 
       await axios.put(
-        `http://localhost:5000/api/messages/${activeMsg._id}/reply`,
+        `${API_BASE_URL}/messages/${activeMsg._id}/reply`,
         { replyText },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -897,7 +898,7 @@ export default function AdminDashboard() {
 
     const markResolved = async (id) => {
       await axios.put(
-        `http://localhost:5000/api/messages/${id}/resolve`,
+        `${API_BASE_URL}/messages/${id}/resolve`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -9,6 +9,7 @@ import {
   Clock,
   DollarSign,
 } from "lucide-react";
+import { API_BASE_URL } from "../../config";
 
 export default function OwnerDashboard() {
   const token = localStorage.getItem("token");
@@ -23,14 +24,14 @@ export default function OwnerDashboard() {
     const loadAll = async () => {
       try {
         const bakeryRes = await axios.get(
-          "http://localhost:5000/api/bakeries/mine",
+          `${API_BASE_URL}/bakeries/mine`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setBakery(bakeryRes.data);
 
         const [prodRes, orderRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/products/${bakeryRes.data._id}`),
-          axios.get("http://localhost:5000/api/orders/owner-orders", {
+          axios.get(`${API_BASE_URL}/products/${bakeryRes.data._id}`),
+          axios.get(`${API_BASE_URL}/orders/owner-orders`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

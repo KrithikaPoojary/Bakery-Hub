@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { SERVER_URL } from "../../config";
 
 export default function MyProfile() {
   const [user, setUser] = useState(null);
@@ -8,7 +9,7 @@ export default function MyProfile() {
   useEffect(() => {
     async function loadProfile() {
       try {
-        const res = await fetch("http://localhost:5000/api/users/me", {
+        const res = await fetch(`${SERVER_URL}/api/users/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
