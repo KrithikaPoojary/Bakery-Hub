@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 // GET MY PROFILE
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const userId = req.user.id || req.user._id;
+    const user = await User.findById(userId).select("-password");
     if (!user) return res.status(404).json({ error: "User not found" });
     res.json(user);
   } catch (err) {
@@ -16,8 +17,9 @@ export const getMe = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const { name, phone } = req.body;
+    const userId = req.user.id || req.user._id;
 
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
 
     if (name) user.name = name;
@@ -35,8 +37,9 @@ export const updateProfile = async (req, res) => {
 export const changePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
+    const userId = req.user.id || req.user._id;
 
-    const user = await User.findById(req.user.id).select("+password");
+    const user = await User.findById(userId).select("+password");
     if (!user) return res.status(404).json({ error: "User not found" });
 
     const isMatch = await user.comparePassword(oldPassword);

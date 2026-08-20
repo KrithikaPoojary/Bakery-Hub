@@ -60,19 +60,19 @@ export const placeOrder = async (req, res) => {
     // ---------------------------
     try {
       if (customer?.email) {
-        await sendMail(
-          customer.email,
-          "BakeHub – Your Order is Confirmed! 🎉",
-          `
+        await sendMail({
+          to: customer.email,
+          subject: "BakeHub – Your Order is Confirmed! 🎉",
+          html: `
           <h2>Hello ${customer.name},</h2>
           <p>Your order has been successfully placed!</p>
           <h3>Order Summary:</h3>
           <ul>${itemsHTML}</ul>
           <p><strong>Total:</strong> ₹${total}</p>
           <p><strong>Delivery Address:</strong> ${address}</p>
-          <p>Thank you for ordering from <strong>${bakery.name}</strong> ❤️</p>
-        `
-        );
+          <p>Thank you for ordering from <strong>${bakery?.name || "Bakery"}</strong> ❤️</p>
+        `,
+        });
       }
     } catch (emailErr) {
       console.log("Customer email failed:", emailErr.message);
@@ -83,18 +83,18 @@ export const placeOrder = async (req, res) => {
     // ---------------------------
     try {
       if (bakery?.ownerId?.email) {
-        await sendMail(
-          bakery.ownerId.email,
-          "BakeHub – New Order Received! 🛒",
-          `
-          <h2>New Order from ${customer.name}</h2>
+        await sendMail({
+          to: bakery.ownerId.email,
+          subject: "BakeHub – New Order Received! 🛒",
+          html: `
+          <h2>New Order from ${customer?.name || "Customer"}</h2>
           <h3>Items:</h3>
           <ul>${itemsHTML}</ul>
           <p><strong>Total:</strong> ₹${total}</p>
           <p><strong>Delivery Address:</strong> ${address}</p>
           <p>Please update the order status in Owner Dashboard.</p>
-        `
-        );
+        `,
+        });
       }
     } catch (emailErr) {
       console.log("Owner email failed:", emailErr.message);
