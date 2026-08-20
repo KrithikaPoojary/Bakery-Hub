@@ -4,30 +4,25 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [role, setRole] = useState("customer");
 
-  // Common Fields
+  // form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-
-  // Owner Fields
   const [bakeryName, setBakeryName] = useState("");
   const [address, setAddress] = useState("");
 
-  // Validation
-  const [errors, setErrors] = useState({});
-  const [generalError, setGeneralError] = useState("");
-
-  // UI states
+  // ui states
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [generalError, setGeneralError] = useState("");
 
-  // OTP States
+  // OTP states
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
@@ -36,45 +31,42 @@ export default function Register() {
   const [otpMessage, setOtpMessage] = useState("");
   const [otpError, setOtpError] = useState("");
 
+  // get role from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const r = params.get("role");
     if (r === "customer" || r === "owner") setRole(r);
   }, [location]);
 
-  // ================= SEND OTP =================
+  // ---------------- SEND OTP ----------------
   const handleSendOtp = async () => {
-    setOtpError("");
-    setOtpMessage("");
-    setOtp("");
-    setOtpVerified(false);
-
     if (!email.trim()) {
-      setErrors((p) => ({ ...p, email: "Email is required" }));
+      setOtpError("Email is required");
       return;
     }
 
     try {
       setOtpSending(true);
+      setOtpError("");
+      setOtpMessage("");
+
       const res = await axios.post(
         "http://localhost:5000/api/auth/send-register-otp",
         { email }
       );
+
       setOtpSent(true);
       setOtpMessage(res.data.message);
-    } catch (err) {
-      setOtpError(err.response?.data?.error || "Failed to send OTP");
+    } catch {
+      setOtpError("Failed to send OTP. Please try again.");
       setOtpSent(false);
     } finally {
       setOtpSending(false);
     }
   };
 
-  // ================= VERIFY OTP =================
+  // ---------------- VERIFY OTP ----------------
   const handleVerifyOtp = async () => {
-    setOtpError("");
-    setOtpMessage("");
-
     if (!otp.trim()) {
       setOtpError("Please enter OTP");
       return;
@@ -82,28 +74,32 @@ export default function Register() {
 
     try {
       setOtpVerifying(true);
+      setOtpError("");
+      setOtpMessage("");
+
       const res = await axios.post(
         "http://localhost:5000/api/auth/verify-register-otp",
         { email, otp }
       );
+
       if (res.data.verified) {
         setOtpVerified(true);
-        setOtpMessage("Email verified successfully!");
+        setOtpMessage("Email verified successfully");
       }
-    } catch (err) {
-      setOtpError(err.response?.data?.error || "Invalid OTP");
+    } catch {
+      setOtpError("Invalid or expired OTP");
     } finally {
       setOtpVerifying(false);
     }
   };
 
-  // ================= REGISTER =================
+  // ---------------- REGISTER ----------------
   const handleRegister = async (e) => {
     e.preventDefault();
     setGeneralError("");
 
     if (!otpVerified) {
-      setGeneralError("Please verify your email with OTP before registering.");
+      setGeneralError("Please verify your email using OTP.");
       return;
     }
 
@@ -121,26 +117,19 @@ export default function Register() {
           : "http://localhost:5000/api/auth/register-owner";
 
       await axios.post(endpoint, payload);
+
       navigate(`/login?role=${role}`);
-    } catch (err) {
-      setGeneralError(err.response?.data?.error || "Registration failed");
+    } catch {
+      setGeneralError("Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    // ✅ SAME GLOBAL BACKGROUND AS LOGIN
     <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
-      {/* ✅ DARK GLASS CARD */}
-      <div
-        className="w-full max-w-lg
-                   bg-gray-900/85 backdrop-blur-md
-                   border border-white/10
-                   rounded-2xl shadow-2xl
-                   px-8 py-10 text-white"
-      >
-        <h1 className="text-3xl font-extrabold text-center mb-6">
+      <div className="w-full max-w-lg bg-gray-900/85 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl px-8 py-10 text-white">
+        <h1 className="text-3xl font-bold text-center mb-6">
           Register as {role === "customer" ? "Customer" : "Bakery Owner"}
         </h1>
 
@@ -149,20 +138,20 @@ export default function Register() {
         )}
 
         <form onSubmit={handleRegister} className="space-y-4">
-          {/* NAME */}
+          {/* Name */}
           <input
-            className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 placeholder-gray-400"
+            className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700"
             placeholder="Full Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
-          {/* EMAIL + OTP */}
+          {/* Email + OTP */}
           <div>
             <div className="flex gap-2">
               <input
-                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 placeholder-gray-400"
-                placeholder="Email address"
+                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -191,6 +180,7 @@ export default function Register() {
                 <button
                   type="button"
                   onClick={handleVerifyOtp}
+                  disabled={otpVerifying}
                   className="px-4 rounded-lg bg-green-600 hover:bg-green-700"
                 >
                   Verify
@@ -206,19 +196,19 @@ export default function Register() {
             )}
           </div>
 
-          {/* PHONE */}
+          {/* Phone */}
           <input
-            className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 placeholder-gray-400"
-            placeholder="Phone number"
+            className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700"
+            placeholder="Phone Number"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
 
-          {/* PASSWORD */}
+          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
-              className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 placeholder-gray-400"
+              className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -231,17 +221,17 @@ export default function Register() {
             </span>
           </div>
 
-          {/* OWNER ONLY */}
+          {/* Owner only */}
           {role === "owner" && (
             <>
               <input
-                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 placeholder-gray-400"
+                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700"
                 placeholder="Bakery Name"
                 value={bakeryName}
                 onChange={(e) => setBakeryName(e.target.value)}
               />
               <textarea
-                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700 placeholder-gray-400"
+                className="w-full px-3 py-2 rounded-lg bg-gray-800 border border-gray-700"
                 rows={3}
                 placeholder="Bakery Address"
                 value={address}
@@ -252,7 +242,7 @@ export default function Register() {
 
           <button
             disabled={loading}
-            className="w-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 py-2.5 rounded-lg font-semibold"
+            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 py-2.5 rounded-lg font-semibold"
           >
             {loading ? "Creating account..." : "Create Account"}
           </button>
