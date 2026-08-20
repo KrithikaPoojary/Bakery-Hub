@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import { API_BASE_URL } from "../config";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function Register() {
       setOtpMessage("");
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/send-register-otp",
+        `${API_BASE_URL}/auth/send-register-otp`,
         { email }
       );
 
@@ -78,7 +79,7 @@ export default function Register() {
       setOtpMessage("");
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/verify-register-otp",
+        `${API_BASE_URL}/auth/verify-register-otp`,
         { email, otp }
       );
 
@@ -113,8 +114,8 @@ export default function Register() {
 
       const endpoint =
         role === "customer"
-          ? "http://localhost:5000/api/auth/register-customer"
-          : "http://localhost:5000/api/auth/register-owner";
+          ? `${API_BASE_URL}/auth/register-customer`
+          : `${API_BASE_URL}/auth/register-owner`;
 
       await axios.post(endpoint, payload);
 

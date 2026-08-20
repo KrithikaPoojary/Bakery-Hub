@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { API_BASE_URL } from "../config";
 
 export default function Login() {
   const [role, setRole] = useState("");
@@ -66,7 +67,7 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post(`${API_BASE_URL}/auth/login`, {
         email,
         password,
         role,
