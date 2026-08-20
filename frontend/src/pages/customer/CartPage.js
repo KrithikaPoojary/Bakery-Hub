@@ -2,6 +2,7 @@ import React from "react";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { getAssetUrl } from "../../config";
 
 export default function CartPage() {
   const { cart, increaseQty, decreaseQty, removeFromCart } = useCart();
@@ -56,9 +57,7 @@ export default function CartPage() {
                 <img
                   src={
                     item.imageUrl
-                      ? item.imageUrl.startsWith("http")
-                        ? item.imageUrl
-                        : `http://localhost:5000${item.imageUrl}`
+                      ? getAssetUrl(item.imageUrl)
                       : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
                   }
                   alt={item.name}

@@ -11,6 +11,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -22,7 +23,7 @@ export default function MyOrders() {
     const fetchOrders = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/orders/my-orders",
+          `${API_BASE_URL}/orders/my-orders`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 import { MapPin, Phone, CreditCard, Wallet, AlertCircle } from "lucide-react";
 import PaymentPopup from "../../components/PaymentPopup";
@@ -36,7 +37,7 @@ export default function CheckoutPage() {
   const placeCOD = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/orders",
+        `${API_BASE_URL}/orders`,
         {
           items: cart.map((i) => ({ ...i, bakeryId: i.bakeryId })),
           total,
@@ -60,7 +61,7 @@ export default function CheckoutPage() {
   const placeOnlineOrder = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/orders",
+        `${API_BASE_URL}/orders`,
         {
           items: cart.map((i) => ({ ...i, bakeryId: i.bakeryId })),
           total,

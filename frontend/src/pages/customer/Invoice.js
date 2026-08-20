@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { API_BASE_URL } from "../../config";
 
 export default function Invoice() {
   const { orderId } = useParams();
@@ -12,7 +13,7 @@ export default function Invoice() {
   // ------------------ FETCH ORDER ------------------
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/orders/${orderId}`, {
+      .get(`${API_BASE_URL}/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setOrder(res.data))

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { Search, Loader2, ShoppingBag } from "lucide-react";
+import { API_BASE_URL, getAssetUrl } from "../../config";
 
 export default function CustomerMenu() {
   const { id } = useParams();
@@ -32,12 +33,12 @@ export default function CustomerMenu() {
         setLoading(true);
 
         const bakeryRes = await axios.get(
-          `http://localhost:5000/api/bakeries/${id}`
+          `${API_BASE_URL}/bakeries/${id}`
         );
         setBakery(bakeryRes.data);
 
         const productRes = await axios.get(
-          `http://localhost:5000/api/products/${id}`
+          `${API_BASE_URL}/products/${id}`
         );
 
         const normalized = (productRes.data || []).map((p) => ({
@@ -109,9 +110,7 @@ export default function CustomerMenu() {
         <img
           src={
             bakery?.imageUrl
-              ? bakery.imageUrl.startsWith("http")
-                ? bakery.imageUrl
-                : `http://localhost:5000${bakery.imageUrl}`
+              ? getAssetUrl(bakery.imageUrl)
               : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000"
           }
           className="w-full h-full object-cover"
@@ -175,9 +174,7 @@ export default function CustomerMenu() {
               <img
                 src={
                   item.imageUrl
-                    ? item.imageUrl.startsWith("http")
-                      ? item.imageUrl
-                      : `http://localhost:5000${item.imageUrl}`
+                    ? getAssetUrl(item.imageUrl)
                     : "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000"
                 }
                 className="w-full h-48 object-cover"
