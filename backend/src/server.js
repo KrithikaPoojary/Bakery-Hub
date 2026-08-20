@@ -66,6 +66,12 @@ const __dirname = path.dirname(__filename);
 // Static folder for uploaded images
 app.use("/uploads", express.static(path.join(__dirname, "./public/uploads")));
 
+// Ensure database connection middleware for serverless
+app.use(async (_req, _res, next) => {
+  await connectDB();
+  next();
+});
+
 // Register all routes
 app.use("/uploads", express.static("public/uploads"));
 app.use("/api/auth", authRoutes);
@@ -78,12 +84,12 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/payouts", payoutRoutes);
 
-// 🚀 Start server
-const start = async () => {
-  await connectDB();
-  app.listen(process.env.PORT || 5000, () =>
-    console.log(`🚀 Server running at http://localhost:${process.env.PORT}`)
+// 🚀 Start server locally if not running on Vercel
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () =>
+    console.log(`🚀 Server running at http://localhost:${PORT}`)
   );
-};
+}
 
-start();
+export default app;
