@@ -67,30 +67,8 @@ app.get("/", (_req, res) => {
 
 // ❤️ Health route
 app.get("/api/health", (_req, res) =>
-  res.json({ ok: true, service: "BakeHub API", mongo: !!process.env.MONGO_URI, jwt: !!process.env.JWT_SECRET })
+  res.json({ ok: true, service: "BakeHub API" })
 );
-
-// 🔍 Temp debug: list users in deployed DB (REMOVE AFTER DIAGNOSIS)
-app.get("/api/debug-users", async (_req, res) => {
-  try {
-    await connectDB();
-    const mongoose = (await import("mongoose")).default;
-    const db = mongoose.connection.db;
-    const collections = await db.listCollections().toArray();
-    const collNames = collections.map(c => c.name);
-    const users = await db.collection("users").find({}, { projection: { email: 1, role: 1, _id: 0 } }).toArray();
-    const uri = process.env.MONGO_URI || "NOT SET";
-    res.json({
-      dbName: db.databaseName,
-      collections: collNames,
-      userCount: users.length,
-      users,
-      uriSnippet: uri.substring(0, 80)
-    });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
 
 // File path utilities
 const __filename = fileURLToPath(import.meta.url);
