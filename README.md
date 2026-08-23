@@ -1,17 +1,18 @@
 # BakeHub - Online Bakery Marketplace Platform
 
-## 📋 Prerequisites
+## Prerequisites
 - **Node.js**: v18.0.0 or higher
 - **MongoDB**: Active MongoDB Atlas cluster
 - **Git**: Installed on your machine
 - **Brevo (Sendinblue)**: SMTP credentials for email OTP verification
-- 
-## 💻 Local Setup
-### 1️⃣ Clone the Repository
+  
+## Local Setup
+## 1️⃣ Clone the Repository
 
 git clone https://github.com/KrithikaPoojary/Bakery-Hub.git
 cd Bakery-Hub
-2️⃣ Backend Setup (backend)
+
+##2️⃣ Backend Setup (backend)
 bash
 cd backend
 npm install
@@ -34,7 +35,8 @@ bash
 npm start
 # or for development with auto-reload:
 npm run dev
-3️⃣ Frontend Setup (frontend)
+
+## 3️⃣ Frontend Setup (frontend)
 Open a new terminal window:
 
 bash
