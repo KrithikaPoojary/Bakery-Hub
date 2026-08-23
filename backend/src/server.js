@@ -75,9 +75,18 @@ app.get("/api/debug-users", async (_req, res) => {
   try {
     await connectDB();
     const mongoose = (await import("mongoose")).default;
-    const users = await mongoose.connection.db.collection("users").find({}, { projection: { email: 1, role: 1, _id: 0 } }).toArray();
+    const db = mongoose.connection.db;
+    const collections = await db.listCollections().toArray();
+    const collNames = collections.map(c => c.name);
+    const users = await db.collection("users").find({}, { projection: { email: 1, role: 1, _id: 0 } }).toArray();
     const uri = process.env.MONGO_URI || "NOT SET";
-    res.json({ dbName: mongoose.connection.db.databaseName, userCount: users.length, users, uriStart: uri.substring(0, 50) });
+    res.json({
+      dbName: db.databaseName,
+      collections: collNames,
+      userCount: users.length,
+      users,
+      uriSnippet: uri.substring(0, 80)
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
