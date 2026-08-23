@@ -10,10 +10,9 @@
 ## 1️⃣ Clone the Repository
 
 git clone https://github.com/KrithikaPoojary/Bakery-Hub.git
-cd Bakery-Hub
+   cd Bakery-Hub
 
 ## 2️⃣ Backend Setup (backend)
-bash
 cd backend
 npm install
 Create a .env file inside backend/:
@@ -31,7 +30,6 @@ SMTP_PASS=your_smtp_password
 EMAIL_FROM=your_email@gmail.com
 Run the backend server:
 
-bash
 npm start
 # or for development with auto-reload:
 npm run dev
@@ -39,7 +37,6 @@ npm run dev
 ## 3️⃣ Frontend Setup (frontend)
 Open a new terminal window:
 
-bash
 cd frontend
 npm install
 Create a .env file inside frontend/:
@@ -48,7 +45,6 @@ env
 REACT_APP_API_URL=http://localhost:5000/api
 Run the React app:
 
-bash
 npm start
 The app will launch at http://localhost:3000.
 
