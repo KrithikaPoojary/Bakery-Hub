@@ -70,6 +70,19 @@ app.get("/api/health", (_req, res) =>
   res.json({ ok: true, service: "BakeHub API", mongo: !!process.env.MONGO_URI, jwt: !!process.env.JWT_SECRET })
 );
 
+// 🔍 Temp debug: list users in deployed DB (REMOVE AFTER DIAGNOSIS)
+app.get("/api/debug-users", async (_req, res) => {
+  try {
+    await connectDB();
+    const mongoose = (await import("mongoose")).default;
+    const users = await mongoose.connection.db.collection("users").find({}, { projection: { email: 1, role: 1, _id: 0 } }).toArray();
+    const uri = process.env.MONGO_URI || "NOT SET";
+    res.json({ dbName: mongoose.connection.db.databaseName, userCount: users.length, users, uriStart: uri.substring(0, 50) });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // File path utilities
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
