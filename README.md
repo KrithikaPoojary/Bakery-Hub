@@ -35,8 +35,13 @@ SMTP_PASS=your_smtp_password
 EMAIL_FROM=your_email@gmail.com
 
 Run the backend server:
+
 ```bash
-npm start or
+npm start
+```
+Or, for development with auto-reload:
+
+```bash
 npm run dev
 ```
 
@@ -83,4 +88,3 @@ EMAIL_FROM
 In **MongoDB Atlas > Network Access**, ensure IP Access is set to `0.0.0.0/0` (Allow access from anywhere).
 
 Click **Deploy / Redeploy**.
-Click Deploy / Redeploy.
