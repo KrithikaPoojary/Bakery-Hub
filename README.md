@@ -12,7 +12,7 @@
 git clone https://github.com/KrithikaPoojary/Bakery-Hub.git
 cd Bakery-Hub
 
-##2️⃣ Backend Setup (backend)
+## 2️⃣ Backend Setup (backend)
 bash
 cd backend
 npm install
