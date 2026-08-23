@@ -9,12 +9,17 @@
 ## Local Setup
 ## 1️⃣ Clone the Repository
 
+```bash
 git clone https://github.com/KrithikaPoojary/Bakery-Hub.git
-   cd Bakery-Hub
+cd Bakery-Hub
+```
 
 ## 2️⃣ Backend Setup (backend)
+
+```bash
 cd backend
 npm install
+```
 Create a .env file inside backend/:
 
 env
@@ -28,39 +33,54 @@ SMTP_PORT=587
 SMTP_USER=your_smtp_user
 SMTP_PASS=your_smtp_password
 EMAIL_FROM=your_email@gmail.com
-Run the backend server:
 
-npm start
-# or for development with auto-reload:
+Run the backend server:
+```bash
+npm start or
 npm run dev
+```
 
 ## 3️⃣ Frontend Setup (frontend)
 Open a new terminal window:
-
+```bash
 cd frontend
 npm install
 Create a .env file inside frontend/:
+```
 
-env
+```env
 REACT_APP_API_URL=http://localhost:5000/api
+```
+
 Run the React app:
 
+```bash
 npm start
+```
 The app will launch at http://localhost:3000.
 
-🌐 Deployment (Vercel)
-This project is configured as a full-stack monorepo deployed directly to Vercel using vercel.json.
+## 🌐 Deployment (Vercel)
 
-1️⃣ Project Settings & Environment Variables
+This project is configured as a full-stack monorepo deployed directly to Vercel using `vercel.json`.
+
+### 1️⃣ Project Settings & Environment Variables
+
 Import the repository on Vercel.
-Go to Settings > Environment Variables and add the following keys for Production, Preview, and Development:
+
+Go to **Settings > Environment Variables** and add the following keys for **Production, Preview, and Development**:
+
+```text
 MONGO_URI
 JWT_SECRET
-JWT_EXPIRES (e.g. 7d)
+JWT_EXPIRES
 SMTP_HOST
 SMTP_PORT
 SMTP_USER
 SMTP_PASS
 EMAIL_FROM
-In MongoDB Atlas > Network Access, ensure IP Access is set to 0.0.0.0/0 (Allow access from anywhere).
+```
+
+In **MongoDB Atlas > Network Access**, ensure IP Access is set to `0.0.0.0/0` (Allow access from anywhere).
+
+Click **Deploy / Redeploy**.
 Click Deploy / Redeploy.
