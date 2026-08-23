@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -22,12 +21,24 @@ import { fileURLToPath } from "url";
 const app = express();
 
 // Allow frontend to connect
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "https://bakeryhub-app.vercel.app",
+  /\.vercel\.app$/,
+];
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"],
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);
+      const allowed = allowedOrigins.some((o) =>
+        typeof o === "string" ? o === origin : o.test(origin)
+      );
+      cb(allowed ? null : new Error("CORS: origin not allowed"), allowed);
+    },
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   })
 );
 
@@ -56,7 +67,7 @@ app.get("/", (_req, res) => {
 
 // ❤️ Health route
 app.get("/api/health", (_req, res) =>
-  res.json({ ok: true, service: "BakeHub API" })
+  res.json({ ok: true, service: "BakeHub API", mongo: !!process.env.MONGO_URI, jwt: !!process.env.JWT_SECRET })
 );
 
 // File path utilities
